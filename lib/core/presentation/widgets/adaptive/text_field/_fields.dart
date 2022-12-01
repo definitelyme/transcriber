@@ -7,7 +7,7 @@ extension FormFields on _AdaptiveTextFormInputState {
           decoration: widget.validate && widget.errorText != null
               ? _cupertinoData.decoration.copyWith(border: Border.all(color: Palette.errorRed, width: 1.5))
               : _cupertinoData.decoration.copyWith(border: _cupertinoData.decoration.border),
-          maxLines: widget.minLines == null ? widget.maxLines : null,
+          maxLines: widget.minLines ?? widget.maxLines,
           minLines: widget.minLines,
           expands: widget.minLines == null && widget.maxLines == null ? widget.expands : false,
           maxLength: widget.showMaxLength ? widget.maxLength : null,
@@ -61,7 +61,7 @@ extension FormFields on _AdaptiveTextFormInputState {
         decoration: _cupertinoData.decoration.copyWith(
           color: widget.validate && widget.errorText != null ? Palette.errorRed : null,
         ),
-        maxLines: widget.minLines == null ? widget.maxLines : null,
+        maxLines: widget.minLines ?? widget.maxLines,
         minLines: widget.minLines,
         expands: widget.minLines == null && widget.maxLines == null ? widget.expands : false,
         maxLength: widget.showMaxLength ? widget.maxLength : null,
@@ -113,7 +113,7 @@ extension FormFields on _AdaptiveTextFormInputState {
         child: Material(
           type: MaterialType.transparency,
           child: TextFormField(
-            maxLines: widget.minLines == null ? widget.maxLines : null,
+            maxLines: widget.minLines ?? widget.maxLines,
             minLines: widget.minLines,
             expands: widget.minLines == null && widget.maxLines == null ? widget.expands : false,
             maxLength: widget.showMaxLength ? widget.maxLength : null,
@@ -161,7 +161,7 @@ extension FormFields on _AdaptiveTextFormInputState {
               labelStyle: widget.labelStyle,
               enabled: !widget.disabled,
               border: widget.border,
-              enabledBorder: widget.enabledBorder,
+              enabledBorder: widget.enabledBorder ?? widget.border,
               disabledBorder: widget.disabledBorder,
               focusedErrorBorder: widget.focusedErrorBorder,
               errorBorder: widget.errorBorder,
@@ -185,13 +185,18 @@ extension FormFields on _AdaptiveTextFormInputState {
               suffixIconColor: _materialData.suffixIconColor,
               suffixIconConstraints: _materialData.suffixIconConstraints,
               errorStyle: _errorTextStyle,
+              counter: _materialData.counter,
+              counterStyle: _materialData.counterStyle,
+              counterText: _materialData.counterText,
+              semanticCounterText: _materialData.semanticCounterText,
+              errorMaxLines: 5,
             ).merge(widget.decoration),
           ),
         ),
       );
 
   Widget get _materialTextField => TextField(
-        maxLines: widget.minLines == null ? widget.maxLines : null,
+        maxLines: widget.minLines ?? widget.maxLines,
         minLines: widget.minLines,
         expands: widget.minLines == null && widget.maxLines == null ? widget.expands : false,
         maxLength: widget.showMaxLength ? widget.maxLength : null,
@@ -237,7 +242,7 @@ extension FormFields on _AdaptiveTextFormInputState {
           labelStyle: widget.labelStyle,
           enabled: !widget.disabled,
           border: widget.border,
-          enabledBorder: widget.enabledBorder,
+          enabledBorder: widget.enabledBorder ?? widget.border,
           disabledBorder: widget.disabledBorder,
           focusedErrorBorder: widget.focusedErrorBorder,
           errorBorder: widget.errorBorder,
@@ -261,6 +266,11 @@ extension FormFields on _AdaptiveTextFormInputState {
           suffixIconColor: _materialData.suffixIconColor,
           suffixIconConstraints: _materialData.suffixIconConstraints,
           errorStyle: _errorTextStyle,
+          counter: _materialData.counter,
+          counterStyle: _materialData.counterStyle,
+          counterText: _materialData.counterText,
+          semanticCounterText: _materialData.semanticCounterText,
+          errorMaxLines: 5,
         ).merge(widget.decoration),
       );
 }

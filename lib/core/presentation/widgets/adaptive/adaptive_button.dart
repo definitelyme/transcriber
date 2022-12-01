@@ -10,8 +10,10 @@ enum ButtonType {
   text,
 
   /// [ElevatedButton], [CupertinoButton.filled]
-  elevated;
+  elevated,
+}
 
+extension on ButtonType {
   T when<T>({
     required T Function() text,
     required T Function() elevated,
@@ -99,7 +101,7 @@ class AdaptiveButton extends StatelessWidget {
   final double? wordSpacing;
 
   AdaptiveButton({
-    super.key,
+    Key? key,
     this.onLongPress,
     this.alignment = Alignment.center,
     this.backgroundColor,
@@ -122,10 +124,11 @@ class AdaptiveButton extends StatelessWidget {
     this.cupertinoData,
     this.materialData,
   })  : assert(text != null || child != null),
-        type = disabled && (Platform.isIOS || Platform.isMacOS) ? ButtonType.elevated : ButtonType.text;
+        type = disabled && (Platform.isIOS || Platform.isMacOS) ? ButtonType.elevated : ButtonType.text,
+        super(key: key);
 
   const AdaptiveButton.elevated({
-    super.key,
+    Key? key,
     this.onLongPress,
     this.alignment = Alignment.center,
     this.backgroundColor,
@@ -148,7 +151,8 @@ class AdaptiveButton extends StatelessWidget {
     this.cupertinoData,
     this.materialData,
   })  : assert(text != null || child != null),
-        type = ButtonType.elevated;
+        type = ButtonType.elevated,
+        super(key: key);
 
   Color get _backgroundColor => backgroundColor ?? Palette.primary;
   BorderRadius get _borderRadius => borderRadius ?? BorderRadius.circular(Const.buttonRadius);
@@ -156,6 +160,7 @@ class AdaptiveButton extends StatelessWidget {
   double get _fontSize => fontSize ?? 16;
   _MaterialButtonData get _materialData => materialData?.call(__materialData) ?? __materialData;
   EdgeInsetsGeometry? get _padding => const EdgeInsets.symmetric(horizontal: 8, vertical: 8).merge(padding);
+  Color? get _splashColor => _materialData.splashColor ?? (_materialData.applyDefaultSplash ? Colors.white10 : null);
   Widget get _text => AdaptiveText(
         text ?? '',
         maxLines: maxLines,
@@ -164,8 +169,8 @@ class AdaptiveButton extends StatelessWidget {
         fontSize: _fontSize,
         fontWeight: fontWeight,
         wordSpacing: wordSpacing,
-        textColor: textColor,
-        textColorDark: textColorDark,
+        textColor: textColor ?? Palette.onSurface100Dark,
+        textColorDark: textColorDark ?? Palette.onSurface100Dark,
         style: TextStyle(fontFamily: fontFamily).merge(textStyle),
       );
 
@@ -217,14 +222,17 @@ class AdaptiveButton extends StatelessWidget {
           onLongPress: onLongPress,
           focusNode: _materialData.focusNode,
           style: ElevatedButton.styleFrom(
-            disabledBackgroundColor: _backgroundColor == Colors.transparent ? _backgroundColor : _backgroundColor.withOpacity(0.4),
-            backgroundColor: _backgroundColor,
+            primary: disabled
+                ? _backgroundColor == Colors.transparent
+                    ? _backgroundColor
+                    : _backgroundColor.withOpacity(0.4)
+                : _backgroundColor,
             alignment: alignment,
             elevation: _materialData.elevation,
             padding: _padding,
             shape: _materialData.shape ?? RoundedRectangleBorder(borderRadius: _borderRadius),
             tapTargetSize: _materialData.tapTargetSize,
-            disabledForegroundColor: Palette.onSurface,
+            splashFactory: CustomSplashFactory(splashColor: _splashColor),
             // foregroundColor: _materialData.highlightColor,
             textStyle: textStyle,
             enableFeedback: _materialData.enableFeedback,
@@ -256,7 +264,7 @@ class AdaptiveButton extends StatelessWidget {
                 padding: _padding,
                 shape: _materialData.shape ?? RoundedRectangleBorder(borderRadius: _borderRadius),
                 tapTargetSize: _materialData.tapTargetSize,
-                disabledForegroundColor: Palette.onSurface,
+                splashFactory: CustomSplashFactory(splashColor: _splashColor),
                 // foregroundColor: _materialData.highlightColor,
                 textStyle: textStyle,
                 animationDuration: _materialData.animationDuration,
@@ -307,6 +315,7 @@ class _CupertinoButtonData {
 
 class _MaterialButtonData {
   final Duration? animationDuration;
+  final bool applyDefaultSplash;
   final bool autofocus;
   final Clip clipBehavior;
   final Color? disabledColor;
@@ -317,12 +326,14 @@ class _MaterialButtonData {
   final Color? highlightColor;
   final ButtonBarLayoutBehavior? layoutBehavior;
   final OutlinedBorder? shape;
+  final Color? splashColor;
   final MaterialTapTargetSize? tapTargetSize;
   final double? width;
 
   const _MaterialButtonData({
-    this.animationDuration,
     this.autofocus = false,
+    this.applyDefaultSplash = true,
+    this.animationDuration,
     this.clipBehavior = Clip.hardEdge,
     this.disabledColor,
     this.elevation = 2,
@@ -332,6 +343,7 @@ class _MaterialButtonData {
     this.highlightColor,
     this.layoutBehavior,
     this.shape,
+    this.splashColor,
     this.tapTargetSize,
     this.width,
   });
@@ -341,6 +353,7 @@ class _MaterialButtonData {
   _MaterialButtonData copyWith({
     Duration? animationDuration,
     bool? autofocus,
+    bool? applyDefaultSplash,
     Clip? clipBehavior,
     Color? disabledColor,
     double? elevation,
@@ -350,12 +363,14 @@ class _MaterialButtonData {
     Color? highlightColor,
     ButtonBarLayoutBehavior? layoutBehavior,
     OutlinedBorder? shape,
+    Color? splashColor,
     MaterialTapTargetSize? tapTargetSize,
     double? width,
   }) {
     return _MaterialButtonData(
       animationDuration: animationDuration ?? this.animationDuration,
       autofocus: autofocus ?? this.autofocus,
+      applyDefaultSplash: applyDefaultSplash ?? this.applyDefaultSplash,
       clipBehavior: clipBehavior ?? this.clipBehavior,
       disabledColor: disabledColor ?? this.disabledColor,
       elevation: elevation ?? this.elevation,
@@ -365,6 +380,7 @@ class _MaterialButtonData {
       highlightColor: highlightColor ?? this.highlightColor,
       layoutBehavior: layoutBehavior ?? this.layoutBehavior,
       shape: shape ?? this.shape,
+      splashColor: splashColor ?? this.splashColor,
       tapTargetSize: tapTargetSize ?? this.tapTargetSize,
       width: width ?? this.width,
     );

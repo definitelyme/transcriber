@@ -1,6 +1,6 @@
 library adaptive_text_field.dart;
 
-import 'package:transcriber/core/presentation/index.dart';
+import 'package:transcriber/Core/presentation/index.dart';
 import 'package:transcriber/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +13,10 @@ enum TextFieldType {
   textfield,
 
   /// [TextFormField], [CupertinoTextFormFieldRow].
-  formfield;
+  formfield,
+}
 
+extension on TextFieldType {
   T when<T>({
     required T Function() textfield,
     required T Function() formfield,
@@ -102,7 +104,7 @@ class AdaptiveTextFormInput extends StatefulWidget {
   final bool validate;
 
   const AdaptiveTextFormInput({
-    super.key,
+    Key? key,
     this.onChanged,
     this.onFieldSubmitted,
     this.cupertinoData,
@@ -167,10 +169,11 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.textDirection,
     this.toolbarOptions,
     this.validate = false,
-  }) : _textFieldType = TextFieldType.formfield;
+  })  : _textFieldType = TextFieldType.formfield,
+        super(key: key);
 
   const AdaptiveTextFormInput.textfield({
-    super.key,
+    Key? key,
     this.onChanged,
     void Function(String)? onSubmitted,
     this.cupertinoData,
@@ -236,7 +239,8 @@ class AdaptiveTextFormInput extends StatefulWidget {
   })  : _textFieldType = TextFieldType.textfield,
         onFieldSubmitted = onSubmitted,
         validator = null,
-        autovalidateMode = null;
+        autovalidateMode = null,
+        super(key: key);
 
   @override
   _AdaptiveTextFormInputState createState() => _AdaptiveTextFormInputState();
@@ -245,6 +249,18 @@ class AdaptiveTextFormInput extends StatefulWidget {
       borderRadius: borderRadius, fillColor: fillColor, prefix: prefix, suffix: suffix, textFieldType: TextFieldType.textfield);
 
   _MaterialTextFieldData get _materialData => _MaterialTextFieldData(textFieldType: _textFieldType);
+
+  static BoxDecoration defaultDecoration({
+    BorderRadius? borderRadius,
+    Color? fillColor,
+    Color? borderColor,
+    double? borderWidth,
+  }) =>
+      BoxDecoration(
+        borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(Const.inputBorderRadius)),
+        color: fillColor ?? Utils.resolveColor(CupertinoColors.extraLightBackgroundGray, dark: Palette.inputBgColor),
+        border: Border.all(color: borderColor ?? Palette.inputBorderColor, width: borderWidth ?? 1.5),
+      );
 }
 
 class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with AutomaticKeepAliveClientMixin<AdaptiveTextFormInput> {
@@ -257,12 +273,14 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
     // Only run if controller was initialized within this widget && initial is! null
     if (widget.controller == null && widget.initial != null) {
       // Ensure "initial" !- controller's text && controller hasn't been updated
-      if (widget.initial != _textEditingController.text && !didUpdateController)
+      if (widget.initial != _textEditingController.text && !didUpdateController) {
         setState(() {
           _textEditingController = _textEditingController..text = widget.initial!;
           didUpdateController = true;
         });
+      }
     }
+
     super.didUpdateWidget(oldWidget);
   }
 
@@ -274,8 +292,9 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
 
   @override
   void initState() {
-    _textEditingController = widget.controller ??
-        (widget.initial != null && widget.initial!.isNotEmpty ? TextEditingController(text: widget.initial) : TextEditingController());
+    _textEditingController = widget.initial != null && widget.initial!.isNotEmpty
+        ? TextEditingController(text: widget.initial)
+        : (widget.controller ?? TextEditingController());
 
     super.initState();
   }
@@ -284,7 +303,6 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
   bool get wantKeepAlive => true;
 
   bool get _autoDisposeController => widget.autoDisposeController ?? widget.controller == null;
-
   Iterable<String>? get _autoFillHints {
     if (widget.disabled) return null;
     if (widget.readOnly != null && widget.readOnly!) return null;
@@ -292,13 +310,9 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
   }
 
   _CupertinoTextFieldData get _cupertinoData => widget.cupertinoData?.call(widget._cupertinoData) ?? widget._cupertinoData;
-
   Color? get _cursorColor => Palette.primary;
-
   TextStyle get _disabledTextStyle => _textStyle.copyWith(color: Palette.disabledColor);
-
   TextStyle get _errorTextStyle => _textStyle.copyWith(color: Palette.errorRed, fontSize: 12);
-
   TextStyle get _hintTextStyle => _textStyle
       .copyWith(
         fontWeight: FontWeight.w400,
@@ -307,14 +321,12 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
       .merge(widget.hintStyle);
 
   Brightness get _keyboardAppearance => widget.keyboardAppearance ?? Utils.brightness;
-
   _MaterialTextFieldData get _materialData => widget.materialData?.call(widget._materialData) ?? widget._materialData;
-
   TextFieldType get _textFieldType =>
       Utils.isPlatform(cupertino: _cupertinoData.textFieldType, material: _materialData.textFieldType) ?? widget._textFieldType;
 
   TextStyle get _textStyle =>
-      widget.style ?? TextStyle(color: Palette.onSurface, fontSize: 14, fontWeight: FontWeight.w600).merge(widget.style);
+      widget.style ?? TextStyle(color: Palette.onSurface, fontSize: 16, fontWeight: FontWeight.w400).merge(widget.style);
 
   void _setNewFocus() {
     widget.focus?.unfocus();
@@ -335,9 +347,13 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
           child: _cupertinoTextField,
         ),
       ),
-      material: _textFieldType.when(
-        textfield: () => _materialTextField,
-        formfield: () => _materialTextFormField,
+      material: ClipRRect(
+        borderRadius: _materialData.outerClipRadius,
+        clipBehavior: _materialData.outerClipRadius == BorderRadius.zero ? Clip.none : Clip.hardEdge,
+        child: _textFieldType.when(
+          textfield: () => _materialTextField,
+          formfield: () => _materialTextFormField,
+        ),
       ),
     );
   }
@@ -377,14 +393,7 @@ class _CupertinoTextFieldData {
   bool get _prefixVisible => prefix != null && (prefixMode == OverlayVisibilityMode.always || prefixMode == OverlayVisibilityMode.editing);
   bool get _suffixVisible => suffix != null && (suffixMode == OverlayVisibilityMode.always || suffixMode == OverlayVisibilityMode.editing);
   Color get borderColor => Utils.resolveColor(borderColorLight, dark: borderColorDark)!;
-  BoxDecoration get decoration =>
-      _decoration ??
-      BoxDecoration(
-        borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(Const.inputBorderRadius)),
-        color: fillColor ?? Utils.resolveColor(CupertinoColors.extraLightBackgroundGray, dark: Palette.inputBgColor),
-        border: Border.all(color: Palette.inputBorderColor, width: 1.5),
-      );
-
+  BoxDecoration get decoration => _decoration ?? AdaptiveTextFormInput.defaultDecoration(borderRadius: borderRadius, fillColor: fillColor);
   EdgeInsetsGeometry get padding {
     if (_padding != null) return _padding!;
 
@@ -433,9 +442,14 @@ class _CupertinoTextFieldData {
 class _MaterialTextFieldData {
   final EdgeInsetsGeometry? _padding;
 
+  final Widget? counter;
+  final TextStyle? counterStyle;
+  final String? counterText;
+  final BorderRadius outerClipRadius;
   final Widget? prefixIcon;
   final Color? prefixIconColor;
   final BoxConstraints? prefixIconConstraints;
+  final String? semanticCounterText;
   final Widget? suffixIcon;
   final Color? suffixIconColor;
   final BoxConstraints? suffixIconConstraints;
@@ -445,41 +459,56 @@ class _MaterialTextFieldData {
 
   const _MaterialTextFieldData({
     EdgeInsetsGeometry? padding,
+    this.counter,
+    this.counterStyle,
+    this.counterText,
     this.prefixIcon,
     this.prefixIconColor,
     this.prefixIconConstraints,
+    this.semanticCounterText,
     this.suffixIcon,
     this.suffixIconColor,
     this.suffixIconConstraints,
     this.suffixStyle,
     this.suffixText,
     this.textFieldType,
+    this.outerClipRadius = BorderRadius.zero,
   }) : _padding = padding;
 
   EdgeInsetsGeometry get padding => _padding ?? Const.inputPadding;
 
   _MaterialTextFieldData copyWith({
     EdgeInsetsGeometry? padding,
+    Widget? counter,
+    TextStyle? counterStyle,
+    String? counterText,
     Widget? prefixIcon,
     Color? prefixIconColor,
     BoxConstraints? prefixIconConstraints,
+    String? semanticCounterText,
     Widget? suffixIcon,
     Color? suffixIconColor,
     BoxConstraints? suffixIconConstraints,
     TextStyle? suffixStyle,
     String? suffixText,
     TextFieldType? textFieldType,
+    BorderRadius? outerClipRadius,
   }) =>
       _MaterialTextFieldData(
         padding: padding ?? this.padding,
+        counter: counter ?? this.counter,
+        counterStyle: counterStyle ?? this.counterStyle,
+        counterText: counterText ?? this.counterText,
         prefixIcon: prefixIcon ?? this.prefixIcon,
         prefixIconColor: prefixIconColor ?? this.prefixIconColor,
         prefixIconConstraints: prefixIconConstraints ?? this.prefixIconConstraints,
+        semanticCounterText: semanticCounterText ?? this.semanticCounterText,
         suffixIcon: suffixIcon ?? this.suffixIcon,
         suffixIconColor: suffixIconColor ?? this.suffixIconColor,
         suffixIconConstraints: suffixIconConstraints ?? this.suffixIconConstraints,
         suffixStyle: suffixStyle ?? this.suffixStyle,
         suffixText: suffixText ?? this.suffixText,
         textFieldType: textFieldType ?? this.textFieldType,
+        outerClipRadius: outerClipRadius ?? this.outerClipRadius,
       );
 }

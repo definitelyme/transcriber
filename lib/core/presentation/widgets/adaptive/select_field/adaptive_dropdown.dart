@@ -1,6 +1,6 @@
 library adaptive_dropdown.dart;
 
-import 'package:transcriber/core/presentation/index.dart';
+import 'package:transcriber/Core/presentation/index.dart';
 import 'package:transcriber/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +38,7 @@ class AdaptiveDropdown<Model> extends StatelessWidget {
   final Color? dropdownColor;
   final int elevation;
   final InputBorder? errorBorder;
+  final InputBorder? focusedBorder;
   final InputBorder? focusedErrorBorder;
   final Model groupValue;
   final double? height;
@@ -108,6 +109,7 @@ class AdaptiveDropdown<Model> extends StatelessWidget {
     this.splashColor,
     this.border,
     this.errorBorder,
+    this.focusedBorder,
     this.focusedErrorBorder,
     this.shape,
     this.contentPadding,
@@ -186,6 +188,7 @@ class AdaptiveDropdown<Model> extends StatelessWidget {
           splashColor: splashColor,
           border: border,
           errorBorder: errorBorder,
+          focusedBorder: focusedBorder,
           focusedErrorBorder: focusedErrorBorder,
           shape: shape,
           contentPadding: contentPadding,
@@ -226,19 +229,21 @@ class AdaptiveDropdown<Model> extends StatelessWidget {
                     Flexible(
                       child: Material(
                         shape: shape ??
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(Const.inputBorderRadius),
-                              side: BorderSide(
-                                color: _hasError
-                                    ? Palette.errorRed
-                                    : Utils.resolveColor(
-                                        borderColorLight ?? Palette.inputBorderColorLight,
-                                        dark: borderColorDark ?? borderColorLight ?? Palette.inputBorderColorDark,
-                                        ctx: context,
-                                      )!,
-                                width: 1.0,
-                              ),
-                            ),
+                            (borderRadius == null
+                                ? RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(Const.inputBorderRadius),
+                                    side: BorderSide(
+                                      color: _hasError
+                                          ? Palette.errorRed
+                                          : Utils.resolveColor(
+                                              borderColorLight ?? Palette.inputBorderColorLight,
+                                              dark: borderColorDark ?? borderColorLight ?? Palette.inputBorderColorDark,
+                                              ctx: context,
+                                            )!,
+                                      width: 1.0,
+                                    ),
+                                  )
+                                : null),
                         color: Utils.resolveColor(backgroundColorLight ?? CupertinoColors.extraLightBackgroundGray,
                             dark: backgroundColorDark ?? Palette.inputBgColorDark),
                         borderRadius: borderRadius,

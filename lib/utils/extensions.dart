@@ -9,6 +9,7 @@ import 'package:transcriber/core/presentation/index.dart';
 import 'package:transcriber/managers/locator/locator.dart';
 import 'package:transcriber/managers/navigation/navigation.dart';
 import 'package:transcriber/managers/theme/theme.dart';
+import 'package:transcriber/utils/utils.dart';
 
 /// This allows a value of type T or T?
 /// to be treated as a value of type T?.
@@ -276,6 +277,9 @@ extension NumExtension on num {
   ///
   /// Which is equivalent to 50% of the screen width.
   Widget get hsw => HorizontalSpace(width: toDouble().w);
+
+  ///[ScreenUtil.setSp]
+  double get sp => ScreenUtil().setSp(this);
 
   BorderRadius get br => BorderRadius.circular(toDouble());
 }

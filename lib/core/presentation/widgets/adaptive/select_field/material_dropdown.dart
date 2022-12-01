@@ -24,6 +24,7 @@ class _MaterialDropdown<Model> extends StatelessWidget {
   final Color? dropdownColor;
   final int elevation;
   final InputBorder? errorBorder;
+  final InputBorder? focusedBorder;
   final InputBorder? focusedErrorBorder;
   final Model groupValue;
   final double? height;
@@ -93,6 +94,7 @@ class _MaterialDropdown<Model> extends StatelessWidget {
     this.splashColor,
     this.border,
     this.errorBorder,
+    this.focusedBorder,
     this.focusedErrorBorder,
     this.shape,
     this.contentPadding,
@@ -116,22 +118,19 @@ class _MaterialDropdown<Model> extends StatelessWidget {
     this.selectionOverlay = const CupertinoPickerDefaultSelectionOverlay(),
   }) : super(key: key);
 
-  bool get _hasErrors => validate && errorText?.call(groupValue) != null;
-
-  // PlatformType get _platform => platform ?? Utils.isPlatform(material: PlatformType.android, cupertino: PlatformType.ios)!;
-
-  TextStyle get _textStyle =>
-      TextStyle(color: Palette.onSurface, fontSize: itemFontSize ?? 14, fontWeight: itemFontWeight ?? FontWeight.w600);
-
   TextStyle get _disabledTextStyle => _textStyle.copyWith(color: Palette.disabledColor);
-
   TextStyle get _errorTextStyle => _textStyle.copyWith(color: Palette.errorRed, fontSize: 12);
-
+  bool get _hasErrors => validate && errorText?.call(groupValue) != null;
   TextStyle get _hintTextStyle => _textStyle.copyWith(
         fontSize: hintFontSize,
         fontWeight: hintFontWeight ?? FontWeight.w400,
         color: hintColor ?? Utils.resolveColor(Palette.onSurfaceLight.withOpacity(0.3), dark: Palette.onSurfaceDark.withOpacity(0.5)),
       );
+
+  // PlatformType get _platform => platform ?? Utils.isPlatform(material: PlatformType.android, cupertino: PlatformType.ios)!;
+
+  TextStyle get _textStyle =>
+      TextStyle(color: Palette.onSurface, fontSize: itemFontSize ?? 14, fontWeight: itemFontWeight ?? FontWeight.w600);
 
   String? _text(Model? item) {
     if (item != null) {
@@ -173,6 +172,7 @@ class _MaterialDropdown<Model> extends StatelessWidget {
             autovalidateMode: validate ? AutovalidateMode.always : AutovalidateMode.disabled,
             decoration: InputDecoration(
               border: border,
+              focusedBorder: focusedBorder,
               errorBorder: errorBorder,
               focusedErrorBorder: focusedErrorBorder,
               hintStyle: _hintTextStyle,

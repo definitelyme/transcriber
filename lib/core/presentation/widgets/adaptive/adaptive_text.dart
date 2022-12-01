@@ -85,7 +85,7 @@ class AdaptiveText extends StatelessWidget {
         data = '',
         super(key: key);
 
-  String? get _fontFamily => fontFamily ?? Const.fontFamily;
+  String? get _fontFamily => fontFamily ?? FontManager.family;
   double? get _fontSize => fontSize ?? 13;
   String get _semanticsLabel => semanticsLabel ?? (_type == _TextType.standard ? data : textSpan.toPlainText());
   bool get _softWrap => softWrap ?? true;
