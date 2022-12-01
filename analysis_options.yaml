@@ -1,0 +1,33 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-raw-types: true
+  strong-mode:
+    implicit-casts: false
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.gen.dart"
+    - "**/*.freezed.dart"
+    - "**/*.hive.dart"
+    - "**/*.config.dart"
+    - "**/assets/assets.dart"
+    - "**/widgets/flutter_extended/*.dart"
+  errors:
+    curly_braces_in_flow_control_structures: ignore
+    invalid_annotation_target: ignore
+    dead_code: info
+    depend_on_referenced_packages: ignore
+    no_leading_underscores_for_local_identifiers: ignore
+    constant_identifier_names: ignore
+
+linter:
+  rules:
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    prefer_single_quotes: true
+    always_declare_return_types: true
+    cancel_subscriptions: true
+    await_only_futures: true
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+    library_private_types_in_public_api: false

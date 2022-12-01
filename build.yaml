@@ -1,0 +1,22 @@
+targets:
+  $default:
+    # sources:
+    # exclude:
+    # - lib/features/dashboard/data/remotes/post/**.dart
+    builders:
+      hive_generator:
+        options:
+          runs_before:
+            - auto_route_generator
+      json_serializable:
+        options:
+          # generic_argument_factories: true
+          create_to_json: true
+          explicit_to_json: true
+          include_if_null: false
+          field_rename: none
+      freezed:
+        options:
+          union_key: type
+          union_value_case: snake
+          maybe_when: false

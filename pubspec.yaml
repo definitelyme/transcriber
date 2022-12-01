@@ -1,0 +1,83 @@
+name: transcriber
+
+description: A new Flutter project.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.18.4 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  auto_route: ^5.0.4
+
+  cupertino_icons: ^1.0.2
+
+  dartz: ^0.10.1
+
+  dynamic_cached_fonts: ^1.0.0
+
+  enough_platform_widgets: ^0.5.0
+
+  flutter_bloc: ^8.1.1
+
+  flutter_blue_plus: ^1.3.1
+
+  flutter_screenutil:
+    git:
+      url: https://github.com/Flutter-Fox/flutter_screenutil.git
+      ref: fix-assertion
+
+  flutter_svg: ^1.1.6
+
+  freezed_annotation: ^2.2.0
+
+  get_it: ^7.2.0
+
+  hive_flutter:
+    git:
+      url: https://github.com/Flutter-Fox/hive.git
+      ref: master
+      path: hive_flutter/
+
+  injectable: ^1.5.3
+
+  intl: ^0.17.0
+
+  isolate_handler: ^1.0.2
+
+  json_annotation: ^4.7.0
+
+  path_provider: ^2.0.8
+
+  permission_handler: ^10.2.0
+
+dev_dependencies:
+  auto_route_generator: ^5.0.3
+
+  bloc_test: ^9.1.0
+
+  build_runner: ^2.3.2
+
+  flutter_lints: ^2.0.0
+
+  freezed: ^2.3.0
+
+  hive_generator:
+    git:
+      url: https://github.com/Flutter-Fox/hive.git
+      ref: master
+      path: hive_generator/
+
+  injectable_generator: ^1.5.5
+
+  json_serializable: ^6.5.2
+
+  mockito: ^5.3.2
+
+flutter:
+  uses-material-design: true
