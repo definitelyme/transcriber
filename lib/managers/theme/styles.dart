@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:transcriber/utils/utils.dart';
@@ -81,6 +82,52 @@ class AppTheme extends HiveObject {
         _switchThemeData = switchThemeData,
         _textSelectionThemeData = textSelectionThemeData,
         _textTheme = textTheme;
+
+  static Color _titleColor(BuildContext ctx) => CupertinoDynamicColor.resolve(
+        const CupertinoDynamicColor.withBrightness(color: Palette.onSurface100Light, darkColor: Palette.onSurface100Dark),
+        ctx,
+      );
+
+  static TextStyle cupertinoNavLargeTitle(BuildContext ctx) => CupertinoTheme.of(ctx).textTheme.navLargeTitleTextStyle.copyWith(
+        fontFamily: FontManager.ios,
+        fontFamilyFallback: const [FontManager.ios],
+        fontSize: 26,
+        fontWeight: FontWeight.w700,
+        color: _titleColor(ctx),
+      );
+  static TextStyle cupertinoNavTitle(BuildContext ctx) => CupertinoTheme.of(ctx).textTheme.navTitleTextStyle.copyWith(
+        fontFamily: FontManager.ios,
+        fontFamilyFallback: const [FontManager.ios],
+        color: _titleColor(ctx),
+      );
+
+  static TextStyle? cupertinoTextStyle(BuildContext ctx) => CupertinoTheme.of(ctx).textTheme.textStyle.copyWith(
+        fontFamily: FontManager.ios,
+        fontFamilyFallback: const [FontManager.ios],
+        color: CupertinoDynamicColor.resolve(
+          const CupertinoDynamicColor.withBrightness(color: Palette.onSurfaceLight, darkColor: Palette.onSurfaceDark),
+          ctx,
+        ),
+      );
+
+  static TextStyle? cupertinoAction(BuildContext ctx) => CupertinoTheme.of(ctx).textTheme.actionTextStyle.copyWith(
+        fontFamily: FontManager.ios,
+        fontFamilyFallback: const [FontManager.ios],
+        color: CupertinoDynamicColor.resolve(
+          const CupertinoDynamicColor.withBrightness(color: Palette.primaryColor, darkColor: Palette.primaryDark),
+          ctx,
+        ),
+      );
+
+  static TextStyle? cupertinoDateTimePicker(BuildContext ctx) => CupertinoTheme.of(ctx).textTheme.dateTimePickerTextStyle.copyWith(
+        fontFamily: FontManager.ios,
+        fontFamilyFallback: const [FontManager.ios],
+        fontSize: 22,
+        color: CupertinoDynamicColor.resolve(
+          const CupertinoDynamicColor.withBrightness(color: Palette.onSurfaceLight, darkColor: Palette.onSurfaceDark),
+          ctx,
+        ),
+      );
 
   static TextTheme get textTheme => const TextTheme(
         headlineSmall: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 0.15),
@@ -358,6 +405,51 @@ class AppTheme extends HiveObject {
       radioTheme: _radioThemeData,
       switchTheme: _switchThemeData,
       textTheme: _textTheme,
+    );
+  }
+
+  CupertinoThemeData cupertinoThemeData(BuildContext ctx) {
+    return CupertinoThemeData(
+      brightness: _brightness,
+      primaryColor: CupertinoDynamicColor.resolve(
+        const CupertinoDynamicColor.withBrightness(
+          color: Palette.primaryColor,
+          darkColor: Palette.primaryDark,
+        ),
+        ctx,
+      ),
+      textTheme: CupertinoTextThemeData(
+        primaryColor: CupertinoDynamicColor.resolve(
+          const CupertinoDynamicColor.withBrightness(
+            color: Palette.primaryColor,
+            darkColor: Palette.primaryDark,
+          ),
+          ctx,
+        ),
+        textStyle: AppTheme.cupertinoTextStyle(ctx),
+        actionTextStyle: AppTheme.cupertinoAction(ctx),
+        dateTimePickerTextStyle: AppTheme.cupertinoDateTimePicker(ctx),
+        navLargeTitleTextStyle: AppTheme.cupertinoNavLargeTitle(ctx),
+        navTitleTextStyle: AppTheme.cupertinoNavTitle(ctx),
+        pickerTextStyle: AppTheme.cupertinoTextStyle(ctx),
+        tabLabelTextStyle: AppTheme.cupertinoTextStyle(ctx),
+        navActionTextStyle: AppTheme.cupertinoTextStyle(ctx),
+      ),
+      scaffoldBackgroundColor: CupertinoDynamicColor.resolve(
+        const CupertinoDynamicColor.withBrightness(
+          color: Palette.backgroundColorLight,
+          darkColor: Palette.backgroundColorDark,
+        ),
+        ctx,
+      ),
+      primaryContrastingColor: Colors.white,
+      barBackgroundColor: CupertinoDynamicColor.resolve(
+        CupertinoDynamicColor.withBrightness(
+          color: Palette.backgroundColorLight,
+          darkColor: Palette.backgroundColorDark.shade600,
+        ),
+        ctx,
+      ),
     );
   }
 

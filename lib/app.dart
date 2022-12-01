@@ -55,7 +55,7 @@ class AppView extends StatelessWidget {
             splitScreenMode: true,
             useInheritedMediaQuery: true,
             child: widget,
-            builder: (_, child) => _Entry(router, child: child!),
+            builder: (_, child) => child!,
           ),
         ),
       ),
