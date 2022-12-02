@@ -9,3 +9,4 @@ export 'const.dart';
 export 'helper_functions.dart';
 export 'toast_manager.dart';
 export 'font_manager/font_manager.dart';
+export 'permission_manager.dart';

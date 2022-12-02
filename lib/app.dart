@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:transcriber/managers/locator/locator.dart';
 import 'package:transcriber/managers/navigation/navigation.dart';
 import 'package:transcriber/managers/theme/theme.dart';
@@ -34,7 +34,6 @@ class AppView extends StatelessWidget {
             theme: app.themeData(),
             darkTheme: AppTheme.dark().themeData(),
             themeMode: app.themeMode,
-            scaffoldMessengerKey: scaffoldMessagerKey,
           ),
           cupertino: (c, __) => CupertinoAppRouterData(
             theme: app.cupertinoThemeData(c),
@@ -42,7 +41,7 @@ class AppView extends StatelessWidget {
           ),
           routerDelegate: AutoRouterDelegate(
             router,
-            navigatorObservers: () => <NavigatorObserver>[AutoRouteObserver()],
+            navigatorObservers: () => [AutoRouteObserver()],
           ),
           localizationsDelegates: const [
             DefaultMaterialLocalizations.delegate,
@@ -55,7 +54,11 @@ class AppView extends StatelessWidget {
             splitScreenMode: true,
             useInheritedMediaQuery: true,
             child: widget,
-            builder: (_, child) => child!,
+            builder: (_, child) => Material(
+              elevation: 0,
+              type: MaterialType.transparency,
+              child: OKToast(child: child!),
+            ),
           ),
         ),
       ),

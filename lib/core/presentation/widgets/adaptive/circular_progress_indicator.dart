@@ -71,18 +71,18 @@ class CircularProgressBar extends StatelessWidget {
         return CupertinoActivityIndicator.partiallyRevealed(
           progress: value!,
           radius: radius,
-          color: Utils.resolveColor(color, dark: colorDark, ctx: c),
+          color: Utils.resolveColor(color, dark: colorDark),
         );
       }
       return CupertinoActivityIndicator(
         animating: isAnimating,
         radius: radius,
-        color: Utils.resolveColor(color, dark: colorDark, ctx: c),
+        color: Utils.resolveColor(color, dark: colorDark),
       );
     }
     return CircularProgressIndicator(
       value: value,
-      valueColor: AlwaysStoppedAnimation(color),
+      valueColor: AlwaysStoppedAnimation(Utils.resolveColor(color, dark: colorDark)),
       backgroundColor: background,
       strokeWidth: strokeWidth,
       semanticsLabel: 'Progress Indicator',

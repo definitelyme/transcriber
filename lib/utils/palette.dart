@@ -136,6 +136,8 @@ mixin Palette {
 
   static Color get background => Utils.foldTheme(light: () => backgroundColorLight, dark: () => backgroundColorDark);
 
+  static Color get backgroundInverted => Utils.foldTheme(light: () => backgroundColorDark, dark: () => backgroundColorLight);
+
   static Color get surface => background;
 
   static Color get errorRed => Utils.foldTheme(light: () => errorRedLight, dark: () => errorRedDark);
@@ -150,6 +152,8 @@ mixin Palette {
 
   // static Color get onSurface => Utils.foldTheme(light: () => onSurfaceLight, dark: () => onSurfaceDark);
   static Color get onSurface => Utils.foldTheme(light: () => onSurface100Light, dark: () => onSurfaceDark);
+
+  static Color get onSurfaceInverted => Utils.foldTheme(light: () => onSurface100Dark, dark: () => onSurface100Light);
 
   static Color get onSurface60 => Utils.foldTheme(light: () => onSurface60Light, dark: () => onSurface60Dark);
 

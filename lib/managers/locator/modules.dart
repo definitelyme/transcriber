@@ -1,5 +1,6 @@
 library modules.dart;
 
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:injectable/injectable.dart';
 import 'package:transcriber/managers/navigation/navigation.dart';
 
@@ -11,4 +12,7 @@ abstract class AppModules {
 }
 
 @module
-abstract class ServiceModules {}
+abstract class ServiceModules {
+  @lazySingleton
+  FlutterBluePlus get flutterBlue => FlutterBluePlus.instance;
+}

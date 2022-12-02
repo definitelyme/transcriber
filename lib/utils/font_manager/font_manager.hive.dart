@@ -37,5 +37,8 @@ class FontManagerAdapter extends TypeAdapter<FontManager> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is FontManagerAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is FontManagerAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

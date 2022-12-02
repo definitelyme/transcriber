@@ -57,5 +57,7 @@
 	<string>Transcriber needs Location permission</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Transcriber needs Location permission</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Transcriber needs your permission too use your Microphone</string>
 </dict>
 </plist>

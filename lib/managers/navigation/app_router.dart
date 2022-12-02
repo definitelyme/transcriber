@@ -16,6 +16,23 @@ part 'app_router.gr.dart';
       usesPathAsKey: true,
       page: RecordingScreen,
     ),
+    AutoRoute(
+      fullMatch: true,
+      usesPathAsKey: true,
+      fullscreenDialog: true,
+      page: BluetoothConnectScreen,
+    ),
+    AutoRoute(
+      fullMatch: true,
+      usesPathAsKey: true,
+      page: AudioListScreen,
+    ),
+    AutoRoute(
+      fullMatch: true,
+      usesPathAsKey: true,
+      fullscreenDialog: true,
+      page: AudioDetailScreen,
+    ),
   ],
 )
 class AppRouter extends _$AppRouter {

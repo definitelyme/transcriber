@@ -9,6 +9,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:transcriber/managers/locator/locator.dart';
 import 'package:transcriber/managers/navigation/navigation.dart';
 import 'package:transcriber/managers/theme/theme.dart';
@@ -19,8 +20,6 @@ typedef FutureFunction = FutureOr<dynamic> Function();
 
 // ignore: non_constant_identifier_names
 // Utils get App => Utils._singleton;
-
-final GlobalKey<ScaffoldMessengerState> scaffoldMessagerKey = GlobalKey<ScaffoldMessengerState>();
 
 DateTime get localTime => DateTime.now().toLocal();
 
@@ -49,6 +48,10 @@ class Utils {
   factory Utils() => _singleton;
 
   const Utils._();
+
+  static Future<Directory?> get rootDir async => await getExternalStorageDirectory();
+  static Future<Directory> get cacheDir async => kIsWeb ? Directory('') : await getTemporaryDirectory();
+  static Future<Directory> get documentsDir async => await getApplicationDocumentsDirectory();
 
   /// give access to FocusScope.of(context)
   FocusNode? get focusScope => FocusManager.instance.primaryFocus;

@@ -15,4 +15,5 @@ mixin Const {
   static const inputPadding = EdgeInsets.symmetric(vertical: 14.0, horizontal: 12.0);
   static const inputBorderRadius = 5.0;
   static const fontFamily = 'Spartan';
+  static const kRecordFolder = 'recordings';
 }

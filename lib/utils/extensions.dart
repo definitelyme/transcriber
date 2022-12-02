@@ -603,4 +603,77 @@ extension ListX<T> on Iterable<T> {
     }
     return result;
   }
+
+  List<T> _replace(T newValue, {required bool Function(T prev, T current) predicate}) {
+    return map((e) => predicate(e, newValue) ? newValue : e).toList();
+  }
+
+  /// Returns `true` if the collection has no elements or no elements match the given [predicate].
+  bool _none(bool Function(T) predicate) {
+    if (isEmpty) return true;
+
+    for (final element in this) {
+      if (predicate(element)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  List<T> plusElementAndMapIfAbsent<K>(
+    T other, {
+    required bool Function(T, T) none,
+    bool Function(T, T)? replaceIf,
+    KtPlus position = KtPlus.end,
+  }) {
+    final Iterable<T> currentList;
+
+    if (isNotEmpty && replaceIf != null)
+      currentList = _replace(other, predicate: replaceIf);
+    else
+      currentList = this;
+
+    final isAbsent = currentList._none((it2) => none(other, it2));
+
+    if (!isAbsent) return currentList.toList();
+
+    return position.when(
+      start: () => List.from([other, ...currentList]),
+      end: () => List.from([...currentList, other]),
+    );
+  }
+}
+
+enum KtPlus { start, end }
+
+extension on KtPlus {
+  T when<T>({
+    required T Function() start,
+    required T Function() end,
+  }) {
+    switch (this) {
+      case KtPlus.start:
+        return start.call();
+      case KtPlus.end:
+        return end.call();
+    }
+  }
+}
+
+extension StreamX<T> on Stream<T> {
+  Future<T?> firstOrNull([bool Function(T)? predicate]) async {
+    if (predicate != null) {
+      try {
+        return firstWhere(predicate);
+      } catch (_) {
+        return null;
+      }
+    } else {
+      try {
+        return first;
+      } catch (_) {
+        return null;
+      }
+    }
+  }
 }
