@@ -62,13 +62,15 @@ class PermissionManager {
   static Future<PermissionRequestStatus> requestBluetooth() async {
     if (Utils.platform.isAndroid) {
       final status = await [
+        Permission.locationWhenInUse,
         Permission.bluetoothScan,
         Permission.bluetoothAdvertise,
         Permission.bluetoothConnect,
         Permission.bluetooth,
       ].request();
 
-      if (status[Permission.bluetoothScan] == PermissionStatus.granted &&
+      if (status[Permission.locationWhenInUse] == PermissionStatus.granted &&
+          status[Permission.bluetoothScan] == PermissionStatus.granted &&
           status[Permission.bluetoothAdvertise] == PermissionStatus.granted &&
           status[Permission.bluetoothConnect] == PermissionStatus.granted &&
           status[Permission.bluetooth] == PermissionStatus.granted) {
@@ -77,8 +79,15 @@ class PermissionManager {
         return PermissionRequestStatus.denied;
       }
     } else if (Utils.platform.isIOS) {
-      final status = await Permission.bluetooth.request();
-      return status.value;
+      final status = await [
+        Permission.locationWhenInUse,
+        Permission.bluetooth,
+      ].request();
+      if (status[Permission.locationWhenInUse] == PermissionStatus.granted && status[Permission.bluetooth] == PermissionStatus.granted) {
+        return PermissionRequestStatus.granted;
+      } else {
+        return PermissionRequestStatus.denied;
+      }
     } else {
       return PermissionRequestStatus.none;
     }

@@ -15,269 +15,38 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$BluetoothConnectState {
-  bool get isScanning => throw _privateConstructorUsedError;
-  bool get isBluetoothOn => throw _privateConstructorUsedError;
-  bool get isConnecting => throw _privateConstructorUsedError;
-  List<AnyBluetoothDevice> get devices => throw _privateConstructorUsedError;
-  Either<String, Unit> get status => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $BluetoothConnectStateCopyWith<BluetoothConnectState> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $BluetoothConnectStateCopyWith<$Res> {
-  factory $BluetoothConnectStateCopyWith(BluetoothConnectState value,
-          $Res Function(BluetoothConnectState) then) =
-      _$BluetoothConnectStateCopyWithImpl<$Res, BluetoothConnectState>;
-  @useResult
-  $Res call(
-      {bool isScanning,
-      bool isBluetoothOn,
-      bool isConnecting,
-      List<AnyBluetoothDevice> devices,
-      Either<String, Unit> status});
-}
-
-/// @nodoc
-class _$BluetoothConnectStateCopyWithImpl<$Res,
-        $Val extends BluetoothConnectState>
-    implements $BluetoothConnectStateCopyWith<$Res> {
-  _$BluetoothConnectStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isScanning = null,
-    Object? isBluetoothOn = null,
-    Object? isConnecting = null,
-    Object? devices = null,
-    Object? status = null,
-  }) {
-    return _then(_value.copyWith(
-      isScanning: null == isScanning
-          ? _value.isScanning
-          : isScanning // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isBluetoothOn: null == isBluetoothOn
-          ? _value.isBluetoothOn
-          : isBluetoothOn // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isConnecting: null == isConnecting
-          ? _value.isConnecting
-          : isConnecting // ignore: cast_nullable_to_non_nullable
-              as bool,
-      devices: null == devices
-          ? _value.devices
-          : devices // ignore: cast_nullable_to_non_nullable
-              as List<AnyBluetoothDevice>,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as Either<String, Unit>,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$_BluetoothConnectStateCopyWith<$Res>
-    implements $BluetoothConnectStateCopyWith<$Res> {
-  factory _$$_BluetoothConnectStateCopyWith(_$_BluetoothConnectState value,
-          $Res Function(_$_BluetoothConnectState) then) =
-      __$$_BluetoothConnectStateCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {bool isScanning,
-      bool isBluetoothOn,
-      bool isConnecting,
-      List<AnyBluetoothDevice> devices,
-      Either<String, Unit> status});
-}
-
-/// @nodoc
-class __$$_BluetoothConnectStateCopyWithImpl<$Res>
-    extends _$BluetoothConnectStateCopyWithImpl<$Res, _$_BluetoothConnectState>
-    implements _$$_BluetoothConnectStateCopyWith<$Res> {
-  __$$_BluetoothConnectStateCopyWithImpl(_$_BluetoothConnectState _value,
-      $Res Function(_$_BluetoothConnectState) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isScanning = null,
-    Object? isBluetoothOn = null,
-    Object? isConnecting = null,
-    Object? devices = null,
-    Object? status = null,
-  }) {
-    return _then(_$_BluetoothConnectState(
-      isScanning: null == isScanning
-          ? _value.isScanning
-          : isScanning // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isBluetoothOn: null == isBluetoothOn
-          ? _value.isBluetoothOn
-          : isBluetoothOn // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isConnecting: null == isConnecting
-          ? _value.isConnecting
-          : isConnecting // ignore: cast_nullable_to_non_nullable
-              as bool,
-      devices: null == devices
-          ? _value._devices
-          : devices // ignore: cast_nullable_to_non_nullable
-              as List<AnyBluetoothDevice>,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as Either<String, Unit>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$_BluetoothConnectState extends _BluetoothConnectState
-    with DiagnosticableTreeMixin {
-  const _$_BluetoothConnectState(
-      {this.isScanning = false,
-      this.isBluetoothOn = false,
-      this.isConnecting = false,
-      final List<AnyBluetoothDevice> devices = const [],
-      this.status = const Right(unit)})
-      : _devices = devices,
-        super._();
-
-  @override
-  @JsonKey()
-  final bool isScanning;
-  @override
-  @JsonKey()
-  final bool isBluetoothOn;
-  @override
-  @JsonKey()
-  final bool isConnecting;
-  final List<AnyBluetoothDevice> _devices;
-  @override
-  @JsonKey()
-  List<AnyBluetoothDevice> get devices {
-    if (_devices is EqualUnmodifiableListView) return _devices;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_devices);
-  }
-
-  @override
-  @JsonKey()
-  final Either<String, Unit> status;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'BluetoothConnectState(isScanning: $isScanning, isBluetoothOn: $isBluetoothOn, isConnecting: $isConnecting, devices: $devices, status: $status)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'BluetoothConnectState'))
-      ..add(DiagnosticsProperty('isScanning', isScanning))
-      ..add(DiagnosticsProperty('isBluetoothOn', isBluetoothOn))
-      ..add(DiagnosticsProperty('isConnecting', isConnecting))
-      ..add(DiagnosticsProperty('devices', devices))
-      ..add(DiagnosticsProperty('status', status));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_BluetoothConnectState &&
-            (identical(other.isScanning, isScanning) ||
-                other.isScanning == isScanning) &&
-            (identical(other.isBluetoothOn, isBluetoothOn) ||
-                other.isBluetoothOn == isBluetoothOn) &&
-            (identical(other.isConnecting, isConnecting) ||
-                other.isConnecting == isConnecting) &&
-            const DeepCollectionEquality().equals(other._devices, _devices) &&
-            (identical(other.status, status) || other.status == status));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, isScanning, isBluetoothOn,
-      isConnecting, const DeepCollectionEquality().hash(_devices), status);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_BluetoothConnectStateCopyWith<_$_BluetoothConnectState> get copyWith =>
-      __$$_BluetoothConnectStateCopyWithImpl<_$_BluetoothConnectState>(
-          this, _$identity);
-}
-
-abstract class _BluetoothConnectState extends BluetoothConnectState {
-  const factory _BluetoothConnectState(
-      {final bool isScanning,
-      final bool isBluetoothOn,
-      final bool isConnecting,
-      final List<AnyBluetoothDevice> devices,
-      final Either<String, Unit> status}) = _$_BluetoothConnectState;
-  const _BluetoothConnectState._() : super._();
-
-  @override
-  bool get isScanning;
-  @override
-  bool get isBluetoothOn;
-  @override
-  bool get isConnecting;
-  @override
-  List<AnyBluetoothDevice> get devices;
-  @override
-  Either<String, Unit> get status;
-  @override
-  @JsonKey(ignore: true)
-  _$$_BluetoothConnectStateCopyWith<_$_BluetoothConnectState> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$AnyBluetoothDevice {
-  UniqueId<String> get id => throw _privateConstructorUsedError;
-  String? get localName => throw _privateConstructorUsedError;
-  BluetoothDevice get device => throw _privateConstructorUsedError;
+mixin _$AnyBluetoothDevice<T> {
+  UniqueId<String?> get id => throw _privateConstructorUsedError;
+  String? get deviceName => throw _privateConstructorUsedError;
+  int? get rssi => throw _privateConstructorUsedError;
+  T? get device => throw _privateConstructorUsedError;
   bool get isConnected => throw _privateConstructorUsedError;
-  List<BluetoothService> get services => throw _privateConstructorUsedError;
+  bool get isConnecting => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $AnyBluetoothDeviceCopyWith<AnyBluetoothDevice> get copyWith =>
+  $AnyBluetoothDeviceCopyWith<T, AnyBluetoothDevice<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AnyBluetoothDeviceCopyWith<$Res> {
-  factory $AnyBluetoothDeviceCopyWith(
-          AnyBluetoothDevice value, $Res Function(AnyBluetoothDevice) then) =
-      _$AnyBluetoothDeviceCopyWithImpl<$Res, AnyBluetoothDevice>;
+abstract class $AnyBluetoothDeviceCopyWith<T, $Res> {
+  factory $AnyBluetoothDeviceCopyWith(AnyBluetoothDevice<T> value,
+          $Res Function(AnyBluetoothDevice<T>) then) =
+      _$AnyBluetoothDeviceCopyWithImpl<T, $Res, AnyBluetoothDevice<T>>;
   @useResult
   $Res call(
-      {UniqueId<String> id,
-      String? localName,
-      BluetoothDevice device,
+      {UniqueId<String?> id,
+      String? deviceName,
+      int? rssi,
+      T? device,
       bool isConnected,
-      List<BluetoothService> services});
+      bool isConnecting});
 }
 
 /// @nodoc
-class _$AnyBluetoothDeviceCopyWithImpl<$Res, $Val extends AnyBluetoothDevice>
-    implements $AnyBluetoothDeviceCopyWith<$Res> {
+class _$AnyBluetoothDeviceCopyWithImpl<T, $Res,
+        $Val extends AnyBluetoothDevice<T>>
+    implements $AnyBluetoothDeviceCopyWith<T, $Res> {
   _$AnyBluetoothDeviceCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -289,189 +58,203 @@ class _$AnyBluetoothDeviceCopyWithImpl<$Res, $Val extends AnyBluetoothDevice>
   @override
   $Res call({
     Object? id = null,
-    Object? localName = freezed,
-    Object? device = null,
+    Object? deviceName = freezed,
+    Object? rssi = freezed,
+    Object? device = freezed,
     Object? isConnected = null,
-    Object? services = null,
+    Object? isConnecting = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as UniqueId<String>,
-      localName: freezed == localName
-          ? _value.localName
-          : localName // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
+      deviceName: freezed == deviceName
+          ? _value.deviceName
+          : deviceName // ignore: cast_nullable_to_non_nullable
               as String?,
-      device: null == device
+      rssi: freezed == rssi
+          ? _value.rssi
+          : rssi // ignore: cast_nullable_to_non_nullable
+              as int?,
+      device: freezed == device
           ? _value.device
           : device // ignore: cast_nullable_to_non_nullable
-              as BluetoothDevice,
+              as T?,
       isConnected: null == isConnected
           ? _value.isConnected
           : isConnected // ignore: cast_nullable_to_non_nullable
               as bool,
-      services: null == services
-          ? _value.services
-          : services // ignore: cast_nullable_to_non_nullable
-              as List<BluetoothService>,
+      isConnecting: null == isConnecting
+          ? _value.isConnecting
+          : isConnecting // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_AnyBluetoothDeviceCopyWith<$Res>
-    implements $AnyBluetoothDeviceCopyWith<$Res> {
-  factory _$$_AnyBluetoothDeviceCopyWith(_$_AnyBluetoothDevice value,
-          $Res Function(_$_AnyBluetoothDevice) then) =
-      __$$_AnyBluetoothDeviceCopyWithImpl<$Res>;
+abstract class _$$_AnyBluetoothDeviceCopyWith<T, $Res>
+    implements $AnyBluetoothDeviceCopyWith<T, $Res> {
+  factory _$$_AnyBluetoothDeviceCopyWith(_$_AnyBluetoothDevice<T> value,
+          $Res Function(_$_AnyBluetoothDevice<T>) then) =
+      __$$_AnyBluetoothDeviceCopyWithImpl<T, $Res>;
   @override
   @useResult
   $Res call(
-      {UniqueId<String> id,
-      String? localName,
-      BluetoothDevice device,
+      {UniqueId<String?> id,
+      String? deviceName,
+      int? rssi,
+      T? device,
       bool isConnected,
-      List<BluetoothService> services});
+      bool isConnecting});
 }
 
 /// @nodoc
-class __$$_AnyBluetoothDeviceCopyWithImpl<$Res>
-    extends _$AnyBluetoothDeviceCopyWithImpl<$Res, _$_AnyBluetoothDevice>
-    implements _$$_AnyBluetoothDeviceCopyWith<$Res> {
-  __$$_AnyBluetoothDeviceCopyWithImpl(
-      _$_AnyBluetoothDevice _value, $Res Function(_$_AnyBluetoothDevice) _then)
+class __$$_AnyBluetoothDeviceCopyWithImpl<T, $Res>
+    extends _$AnyBluetoothDeviceCopyWithImpl<T, $Res, _$_AnyBluetoothDevice<T>>
+    implements _$$_AnyBluetoothDeviceCopyWith<T, $Res> {
+  __$$_AnyBluetoothDeviceCopyWithImpl(_$_AnyBluetoothDevice<T> _value,
+      $Res Function(_$_AnyBluetoothDevice<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
-    Object? localName = freezed,
-    Object? device = null,
+    Object? deviceName = freezed,
+    Object? rssi = freezed,
+    Object? device = freezed,
     Object? isConnected = null,
-    Object? services = null,
+    Object? isConnecting = null,
   }) {
-    return _then(_$_AnyBluetoothDevice(
+    return _then(_$_AnyBluetoothDevice<T>(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as UniqueId<String>,
-      localName: freezed == localName
-          ? _value.localName
-          : localName // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
+      deviceName: freezed == deviceName
+          ? _value.deviceName
+          : deviceName // ignore: cast_nullable_to_non_nullable
               as String?,
-      device: null == device
+      rssi: freezed == rssi
+          ? _value.rssi
+          : rssi // ignore: cast_nullable_to_non_nullable
+              as int?,
+      device: freezed == device
           ? _value.device
           : device // ignore: cast_nullable_to_non_nullable
-              as BluetoothDevice,
+              as T?,
       isConnected: null == isConnected
           ? _value.isConnected
           : isConnected // ignore: cast_nullable_to_non_nullable
               as bool,
-      services: null == services
-          ? _value._services
-          : services // ignore: cast_nullable_to_non_nullable
-              as List<BluetoothService>,
+      isConnecting: null == isConnecting
+          ? _value.isConnecting
+          : isConnecting // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_AnyBluetoothDevice extends _AnyBluetoothDevice
+class _$_AnyBluetoothDevice<T> extends _AnyBluetoothDevice<T>
     with DiagnosticableTreeMixin {
   const _$_AnyBluetoothDevice(
       {required this.id,
-      this.localName,
+      required this.deviceName,
+      this.rssi,
       required this.device,
       this.isConnected = false,
-      final List<BluetoothService> services = const []})
-      : _services = services,
-        super._();
+      this.isConnecting = false})
+      : super._();
 
   @override
-  final UniqueId<String> id;
+  final UniqueId<String?> id;
   @override
-  final String? localName;
+  final String? deviceName;
   @override
-  final BluetoothDevice device;
+  final int? rssi;
+  @override
+  final T? device;
   @override
   @JsonKey()
   final bool isConnected;
-  final List<BluetoothService> _services;
   @override
   @JsonKey()
-  List<BluetoothService> get services {
-    if (_services is EqualUnmodifiableListView) return _services;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_services);
-  }
+  final bool isConnecting;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AnyBluetoothDevice(id: $id, localName: $localName, device: $device, isConnected: $isConnected, services: $services)';
+    return 'AnyBluetoothDevice<$T>(id: $id, deviceName: $deviceName, rssi: $rssi, device: $device, isConnected: $isConnected, isConnecting: $isConnecting)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'AnyBluetoothDevice'))
+      ..add(DiagnosticsProperty('type', 'AnyBluetoothDevice<$T>'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('localName', localName))
+      ..add(DiagnosticsProperty('deviceName', deviceName))
+      ..add(DiagnosticsProperty('rssi', rssi))
       ..add(DiagnosticsProperty('device', device))
       ..add(DiagnosticsProperty('isConnected', isConnected))
-      ..add(DiagnosticsProperty('services', services));
+      ..add(DiagnosticsProperty('isConnecting', isConnecting));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AnyBluetoothDevice &&
+            other is _$_AnyBluetoothDevice<T> &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.localName, localName) ||
-                other.localName == localName) &&
-            (identical(other.device, device) || other.device == device) &&
+            (identical(other.deviceName, deviceName) ||
+                other.deviceName == deviceName) &&
+            (identical(other.rssi, rssi) || other.rssi == rssi) &&
+            const DeepCollectionEquality().equals(other.device, device) &&
             (identical(other.isConnected, isConnected) ||
                 other.isConnected == isConnected) &&
-            const DeepCollectionEquality().equals(other._services, _services));
+            (identical(other.isConnecting, isConnecting) ||
+                other.isConnecting == isConnecting));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, localName, device,
-      isConnected, const DeepCollectionEquality().hash(_services));
+  int get hashCode => Object.hash(runtimeType, id, deviceName, rssi,
+      const DeepCollectionEquality().hash(device), isConnected, isConnecting);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AnyBluetoothDeviceCopyWith<_$_AnyBluetoothDevice> get copyWith =>
-      __$$_AnyBluetoothDeviceCopyWithImpl<_$_AnyBluetoothDevice>(
+  _$$_AnyBluetoothDeviceCopyWith<T, _$_AnyBluetoothDevice<T>> get copyWith =>
+      __$$_AnyBluetoothDeviceCopyWithImpl<T, _$_AnyBluetoothDevice<T>>(
           this, _$identity);
 }
 
-abstract class _AnyBluetoothDevice extends AnyBluetoothDevice {
+abstract class _AnyBluetoothDevice<T> extends AnyBluetoothDevice<T> {
   const factory _AnyBluetoothDevice(
-      {required final UniqueId<String> id,
-      final String? localName,
-      required final BluetoothDevice device,
+      {required final UniqueId<String?> id,
+      required final String? deviceName,
+      final int? rssi,
+      required final T? device,
       final bool isConnected,
-      final List<BluetoothService> services}) = _$_AnyBluetoothDevice;
+      final bool isConnecting}) = _$_AnyBluetoothDevice<T>;
   const _AnyBluetoothDevice._() : super._();
 
   @override
-  UniqueId<String> get id;
+  UniqueId<String?> get id;
   @override
-  String? get localName;
+  String? get deviceName;
   @override
-  BluetoothDevice get device;
+  int? get rssi;
+  @override
+  T? get device;
   @override
   bool get isConnected;
   @override
-  List<BluetoothService> get services;
+  bool get isConnecting;
   @override
   @JsonKey(ignore: true)
-  _$$_AnyBluetoothDeviceCopyWith<_$_AnyBluetoothDevice> get copyWith =>
+  _$$_AnyBluetoothDeviceCopyWith<T, _$_AnyBluetoothDevice<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

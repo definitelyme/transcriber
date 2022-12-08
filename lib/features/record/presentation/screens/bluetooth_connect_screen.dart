@@ -21,7 +21,7 @@ class BluetoothConnectScreen extends StatefulWidget with AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<BluetoothConnectCubit>(),
-      child: BlocListener<BluetoothConnectCubit, BluetoothConnectState>(
+      child: BlocListener<BluetoothConnectCubit, BluetoothConnectState<dynamic>>(
         listenWhen: (p, c) => p.status != c.status,
         listener: (c, s) => s.status.fold(
           (error) => ToastManager.custom(msg: error, context: c),
@@ -74,27 +74,28 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
       ToastManager.custom(msg: 'Bluetooth is not supported on this device', context: context);
       WidgetsBinding.instance.endOfFrame.then((_) => navigator.pop());
     } else {
-      PermissionManager.requestBluetooth();
+      await PermissionManager.requestBluetooth();
       _cubit.watchBluetoothState();
     }
     super.didChangeDependencies();
   }
 
-  void toggle(AnyBluetoothDevice device) async {
-    final isConnected = await _cubit.isDeviceConnected(device.device);
+  void toggle(AnyBluetoothDevice<dynamic> device) async {
+    final isConnected = await _cubit.isDeviceConnected(device);
 
     if (isConnected) {
       return Utils.showAlertDialog(
         context: context,
         barrierDismissible: false,
-        builder: (_) => ReactiveAdaptiveAlertdialog<BluetoothConnectCubit, BluetoothConnectState>.value(
+        builder: (_) => ReactiveAdaptiveAlertdialog<BluetoothConnectCubit, BluetoothConnectState<dynamic>>.value(
           bloc: _cubit,
           dialog: (_, s) => AdaptiveAlertdialog(
             title: 'Disconnect',
             content: 'Are you sure you want to disconnect from ${device.name(device.id.value)}?',
             leadingButtonConfig: (d) => d.copyWith(
               text: 'Cancel',
-              disabled: s.isConnecting,
+              // disabled: s.isConnecting,
+              onPressed: () => _cubit.cancelConnect(device),
             ),
             trailingButtonConfig: (d) => d.copyWith(
               text: 'Disconnect',
@@ -102,7 +103,7 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
               disabled: s.isConnecting,
               isLoading: s.isConnecting,
               onPressed: () async {
-                _cubit.disconnect(device.device);
+                await _cubit.disconnect(device);
                 return navigator.popUntil((r) => r.settings.name == BluetoothConnectRoute.name);
               },
             ),
@@ -114,7 +115,7 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
     return Utils.showAlertDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => ReactiveAdaptiveAlertdialog<BluetoothConnectCubit, BluetoothConnectState>.value(
+      builder: (_) => ReactiveAdaptiveAlertdialog<BluetoothConnectCubit, BluetoothConnectState<dynamic>>.value(
         bloc: _cubit,
         dialog: (_, s) => AdaptiveAlertdialog(
           title: 'Connect to ${device.name(device.id.value)}',
@@ -123,8 +124,8 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
           titleHeight: 0.05.h,
           leadingButtonConfig: (d) => d.copyWith(
             text: 'Cancel',
-            disabled: s.isConnecting,
-            onPressed: () => navigator.pop(),
+            // disabled: s.isConnecting,
+            onPressed: () => _cubit.cancelConnect(device),
           ),
           trailingButtonConfig: (d) => d.copyWith(
             text: 'Connect',
@@ -132,7 +133,7 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
             disabled: s.isConnecting,
             isLoading: s.isConnecting,
             onPressed: () async {
-              await _cubit.connect(device.device);
+              await _cubit.connect(device);
               return navigator.popUntil((r) => r.settings.name == BluetoothConnectRoute.name);
             },
           ),
@@ -147,7 +148,7 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
       adaptiveToolbar: AdaptiveToolbar(
         title: 'Wireless Devices',
         actions: [
-          BlocBuilder<BluetoothConnectCubit, BluetoothConnectState>(
+          BlocBuilder<BluetoothConnectCubit, BluetoothConnectState<dynamic>>(
             bloc: _cubit,
             builder: (c, s) => Visibility(
               visible: s.isBluetoothOn,
@@ -180,13 +181,13 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate.fixed([
-              BlocSelector<BluetoothConnectCubit, BluetoothConnectState, bool>(
-                selector: (s) => s.isBluetoothOn,
-                builder: (c, isActive) => Visibility(
+      body: BlocSelector<BluetoothConnectCubit, BluetoothConnectState<dynamic>, bool>(
+        selector: (s) => s.isBluetoothOn,
+        builder: (c, isActive) => CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate.fixed([
+                Visibility(
                   visible: !isActive,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: sidePadding),
@@ -199,7 +200,8 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
                             AdaptiveButton(
                               onPressed: Utils.isPlatform(
                                 material: _cubit.turnOn,
-                                cupertino: () => debugPrint('install open settings dep'),
+                                // cupertino: () => debugPrint('install open settings dep'),
+                                cupertino: _cubit.turnOn,
                               ),
                               text: Utils.isPlatform(material: 'Turn On', cupertino: 'Open Settings'),
                               materialData: (d) => d.copyWith(width: 0.5.w),
@@ -220,48 +222,51 @@ class _BluetoothConnectScreenState extends State<BluetoothConnectScreen> {
                     ),
                   ),
                 ),
-              ),
-            ]),
-          ),
-          //
-          BlocSelector<BluetoothConnectCubit, BluetoothConnectState, List<AnyBluetoothDevice>>(
-            selector: (s) => s.devices,
-            builder: (c, devices) => SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (_, i) => AdaptiveListTile(
-                  onTap: () => toggle(devices[i]),
-                  contentPadding: EdgeInsets.symmetric(horizontal: sidePadding),
-                  horizontalTitleGap: 0,
-                  title: AdaptiveText(
-                    devices.elementAt(i).name(),
-                    maxLines: 2,
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  subtitle: AdaptiveText(
-                    '${devices.elementAt(i).device.id}',
-                    maxLines: 1,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    textColor: Palette.onSurface60,
-                  ),
-                  trailing: Visibility(
-                    visible: devices[i].isConnected,
-                    replacement: const SizedBox.shrink(),
-                    child: Icon(
-                      Icons.check_circle,
-                      color: Palette.primary,
-                      size: 20.sp,
+              ]),
+            ),
+            //
+            BlocSelector<BluetoothConnectCubit, BluetoothConnectState<dynamic>, List<AnyBluetoothDevice<dynamic>>>(
+              selector: (s) => s.devices,
+              builder: (c, devices) => SliverVisibility(
+                visible: isActive,
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, i) => AdaptiveListTile(
+                      onTap: () => toggle(devices[i]),
+                      contentPadding: EdgeInsets.symmetric(horizontal: sidePadding),
+                      horizontalTitleGap: 0,
+                      title: AdaptiveText(
+                        '${devices.elementAt(i).name()}',
+                        maxLines: 2,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      subtitle: AdaptiveText(
+                        '${devices.elementAt(i).id}',
+                        maxLines: 1,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        textColor: Palette.onSurface60,
+                      ),
+                      trailing: Visibility(
+                        visible: devices[i].isConnected,
+                        replacement: const SizedBox.shrink(),
+                        child: Icon(
+                          Icons.check_circle,
+                          color: Palette.primary,
+                          size: 20.sp,
+                        ),
+                      ),
                     ),
+                    childCount: devices.length,
                   ),
                 ),
-                childCount: devices.length,
               ),
             ),
-          ),
-          //
-          SliverToBoxAdapter(child: 0.02.vsh).sliverSafeBottom,
-        ],
+            //
+            SliverToBoxAdapter(child: 0.02.vsh).sliverSafeBottom,
+          ],
+        ),
       ),
     );
   }

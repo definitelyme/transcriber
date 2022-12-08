@@ -620,6 +620,37 @@ extension ListX<T> on Iterable<T> {
     return true;
   }
 
+  List<T> _replaceAll(List<T> newValues, {required bool Function(T prev, T current) predicate}) {
+    return map((e) {
+      final newValue = newValues.firstOrNull((it) => predicate(e, it));
+      return newValue ?? e;
+    }).toList();
+  }
+
+  List<T> plusAndMapIfAbsent<K>(
+    List<T> other, {
+    required bool Function(T, T) none,
+    K Function(T)? distinctBy,
+    bool Function(T, T)? replaceIf,
+    KtPlus position = KtPlus.end,
+  }) {
+    final Iterable<T> currentList;
+
+    if (isNotEmpty && replaceIf != null)
+      currentList = _replaceAll(other, predicate: replaceIf);
+    else
+      currentList = this;
+
+    final _filtered = distinctBy != null
+        ? other.where((it) => currentList._none((it2) => none(it, it2))).toList().unique(distinctBy)
+        : other.where((it) => currentList._none((it2) => none(it, it2))).toList();
+
+    return position.when(
+      start: () => List.from([..._filtered, ...currentList]),
+      end: () => currentList.plus(_filtered),
+    );
+  }
+
   List<T> plusElementAndMapIfAbsent<K>(
     T other, {
     required bool Function(T, T) none,
@@ -644,9 +675,10 @@ extension ListX<T> on Iterable<T> {
   }
 }
 
-enum KtPlus { start, end }
+enum KtPlus {
+  start,
+  end;
 
-extension on KtPlus {
   T when<T>({
     required T Function() start,
     required T Function() end,
@@ -657,6 +689,15 @@ extension on KtPlus {
       case KtPlus.end:
         return end.call();
     }
+  }
+}
+
+extension Unique<E, Id> on List<E> {
+  List<E> unique([Id Function(E element)? id, bool inplace = true]) {
+    final ids = <Id>{};
+    var list = inplace ? this : List<E>.from(this);
+    list.retainWhere((x) => ids.add(id?.call(x) ?? x as Id));
+    return list;
   }
 }
 
